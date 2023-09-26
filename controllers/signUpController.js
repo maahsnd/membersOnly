@@ -67,7 +67,25 @@ exports.signup_post = [
       return;
     } else {
       await user.save();
-      res.redirect('/secret-password');
+      res.redirect(`/${user._id}/secret-password`);
     }
   })
 ];
+
+exports.secret_get = asyncHandler(async (req, res, next) => {
+  res.render('secret-password', { title: 'Secret' });
+});
+
+exports.secret_post = asyncHandler(async (req, res, next) => {
+  if (process.env.SECRETPASSWORD === req.body.secret_password) {
+    const user = User.findByIdAndUpdate(req.body.id);
+    user.membership_status = true;
+    await User.findByIdAndUpdate(req.body.id, user, {});
+    res.redirect('/');
+  } else {
+    res.render('secret-password', {
+      title: 'Secret',
+      Error: "That's not the secret :("
+    });
+  }
+});
