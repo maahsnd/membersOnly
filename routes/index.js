@@ -12,8 +12,8 @@ router.get('/sign-up', signUpController.signup_get);
 
 router.post('/sign-up', signUpController.signup_post);
 
-router.get('/secret-password', function (req, res, next) {
-  res.render('secret-password', { title: 'Secret' });
-});
+router.get('/:id/secret-password', signUpController.secret_get);
+
+router.post('/:id/secret-password', signUpController.secret_post);
 
 module.exports = router;
