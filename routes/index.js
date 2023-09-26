@@ -6,8 +6,8 @@ const signUpController = require('../controllers/signUpController');
 const User = require('../models/User');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', function (req, res) {
+  res.render('index', { title: 'Home', user: req.user });
 });
 
 router.get('/sign-up', signUpController.signup_get);
@@ -29,6 +29,10 @@ router.post(
     failureRedirect: '/log-in'
   })
 );
+
+router.get('/new-message', function (req, res, next) {
+  res.render('new-message');
+});
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {

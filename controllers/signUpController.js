@@ -82,7 +82,7 @@ exports.secret_get = asyncHandler(async (req, res, next) => {
 
 exports.secret_post = asyncHandler(async (req, res, next) => {
   if (process.env.SECRETPASSWORD === req.body.secret_password) {
-    const user = User.findByIdAndUpdate(req.body.id);
+    const user = await User.findById(req.body.id);
     user.membership_status = true;
     await User.findByIdAndUpdate(req.body.id, user, {});
     res.redirect('/');
