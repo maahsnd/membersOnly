@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+
+    h1=title 
+    
+    form(action="" method="POST")
+        label(for="title") Title
+        input(type="text" name="title") 
+        label(for="message") Message
+        input(type="text" name="message")
+        button(type="submit") Post
