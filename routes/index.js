@@ -3,15 +3,26 @@ const router = express.Router();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const signUpController = require('../controllers/signUpController');
+const messageController = require('../controllers/messageController');
 const User = require('../models/User');
 const Message = require('../models/Message');
 const asyncHandler = require('express-async-handler');
+const bcrypt = require('bcryptjs');
 
 /* GET home page. */
 router.get(
   '/',
+  (req, res, next) => {
+    if (req.user) {
+      return next();
+    }
+    res.redirect('/log-in');
+  },
   asyncHandler(async (req, res, next) => {
-    const message_list = await Message.find({}).sort({ time_stamp: 1 }).exec();
+    const message_list = await Message.find({})
+      .populate('author')
+      .sort({ time_stamp: 1 })
+      .exec();
     res.render('index', {
       title: 'Home',
       user: req.user,
@@ -40,9 +51,9 @@ router.post(
   })
 );
 
-router.get('/new-message', function (req, res, next) {
-  res.render('new-message');
-});
+router.get('/new-message', messageController.message_get);
+
+router.post('/new-message', messageController.message_post);
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -51,7 +62,11 @@ passport.use(
         username: username
       });
       if (!user) {
-        return devNull(null, false, { message: 'Incorrect username' });
+        return done(null, false, { message: 'Incorrect username' });
+      }
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        return done(null, false, { message: 'Incorrect password' });
       }
       return done(null, user);
     } catch (err) {
