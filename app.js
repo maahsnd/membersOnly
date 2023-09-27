@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const passport = require('passport');
+const passportConfig = require('./passport-config');
 
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -36,6 +37,7 @@ app.use(
     cookie: { maxAge: 1 * 60 * 60 * 1000 }
   })
 );
+passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
