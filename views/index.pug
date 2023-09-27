@@ -5,7 +5,7 @@ block content
   p Welcome to #{title}
 
   if user 
-    p Hi, #{user}
+    p Hi, #[em #{user.full_name}]
     a(href="/new-message") Create a new message 
   else 
     p To create messages please either 
@@ -15,10 +15,11 @@ block content
 
   h3 Messages 
       each message in message_list 
-        h4 #{message.title}
-        p #{message.text}
-        if user.membership_status 
-          p By: #{message.author}
-          p On: #{message.time_stamp}
-        else 
-          p Anonymous
+        div.message
+          h4 #{message.title}
+          p #{message.text}
+          if message.author.membership_status 
+            p By: #{message.author.full_name}
+            p On: #{message.time_stamp}
+          else 
+            p -- Anonymous 
