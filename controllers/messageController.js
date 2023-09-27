@@ -27,7 +27,6 @@ exports.message_post = [
       text: req.body.text,
       author: req.user
     });
-    console.log('message' + message);
     if (!errors.isEmpty()) {
       res.render('new-message', {
         title: 'Create new message',
@@ -41,3 +40,14 @@ exports.message_post = [
     }
   })
 ];
+
+exports.delete_get = asyncHandler(async (req, res, next) => {
+  const message = await Message.findById(req.params.id).exec();
+  res.render('delete_message', { title: 'Delete message', message: message });
+});
+
+exports.delete_post = asyncHandler(async (req, res, next) => {
+  console.log(req.params.id);
+  await Message.findByIdAndRemove(req.params.id);
+  res.redirect('/');
+});

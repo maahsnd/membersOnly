@@ -1,0 +1,17 @@
+extends layout 
+
+block content 
+
+    h1=title 
+
+    h3 Are you sure you want to delete the following message?
+
+    h4 #{message.title}
+        p #{message.text}
+        p By: #{message.author.full_name}
+        p On: #{message.time_stamp}
+
+    form(action="" method="POST")
+        button(type="submit") Yes, delete message  
+
+    a(href="/") Return home 

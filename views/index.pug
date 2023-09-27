@@ -25,3 +25,5 @@ block content
             p On: #{message.time_stamp}
           else 
             p -- Anonymous 
+          if message.author.admin 
+            a(href=`/delete-message/${message._id}`) Delete
