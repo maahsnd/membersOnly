@@ -2,11 +2,11 @@ extends layout
 
 block content 
 
-    h1=title 
-    
+    h2 Create new message
+
     form(action="" method="POST")
         label(for="title") Title
-        input(type="text" name="title") 
+        input(type="text" name="title" value=(undefined === message ? '' : message.title)) 
         label(for="message") Message
-        input(type="text" name="message")
+        input(type="text" name="text" value=(undefined === message ? '' : message.text))
         button(type="submit") Post
