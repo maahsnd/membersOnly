@@ -2,6 +2,24 @@ const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
+
+exports.login_get = asyncHandler(async (req, res, next) => {
+  res.render('log-in', { title: 'Log-in' });
+});
+
+exports.login_post = asyncHandler(async (req, res, next) => {
+  console.log('export');
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/log-in'
+  })(req, res, next);
+});
+
+exports.user_get = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id).exec();
+  res.render('user', { title: 'User Dashboard', user: user });
+});
 
 exports.signup_get = asyncHandler(async (req, res, next) => {
   res.render('sign-up', { title: 'Sign-up form' });
@@ -71,7 +89,7 @@ exports.signup_post = [
         user.password = hashedPassword;
         await user.save();
       });
-      res.redirect(`/${user._id}/secret-password`);
+      res.redirect(`/log-in`);
     }
   })
 ];
@@ -84,12 +102,30 @@ exports.secret_post = asyncHandler(async (req, res, next) => {
   if (process.env.SECRETPASSWORD === req.body.secret_password) {
     const user = await User.findById(req.params.id);
     user.membership_status = true;
-    await User.findByIdAndUpdate(req.params.id, user, {});
-    res.redirect('/');
+    await User.findByIdAndUpdate(user._id, user, {});
+    res.redirect(`/${user._id}/admin`);
   } else {
     res.render('secret-password', {
       title: 'Secret',
-      Error: "That's not the secret :("
+      error: "That's not the secret :("
+    });
+  }
+});
+
+exports.admin_get = asyncHandler(async (req, res, next) => {
+  res.render('admin', { title: 'Admin sign up' });
+});
+
+exports.admin_post = asyncHandler(async (req, res, next) => {
+  if (process.env.ADMINPIN === req.body.admin_pin) {
+    const user = await User.findById(req.params.id);
+    user.admin = true;
+    await User.findByIdAndUpdate(user._id, user, {});
+    res.redirect('/');
+  } else {
+    res.render('admin', {
+      title: 'Admin sign up',
+      error: 'Incorrect pin'
     });
   }
 });
