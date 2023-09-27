@@ -7,3 +7,18 @@ block content
   if user 
     p Hi, #{user}
     a(href="/new-message") Create a new message 
+  else 
+    p To create messages please either 
+        a(href="/log-in") Log in
+        |  or 
+        a(href="/sign-up") Sign up
+
+  h3 Messages 
+      each message in message_list 
+        h4 #{message.title}
+        p #{message.text}
+        if user.membership_status 
+          p By: #{message.author}
+          p On: #{message.time_stamp}
+        else 
+          p Anonymous
