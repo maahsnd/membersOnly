@@ -3,6 +3,8 @@ extends layout
 block content 
 
     h1=title 
+    if error    
+        h3 #{error}
 
     form(action="", method="post") 
         label(for="username") Username: 
