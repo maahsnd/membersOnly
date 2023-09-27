@@ -7,6 +7,8 @@ block content
   if user 
     p Hi, #[em #{user.full_name}]
     a(href="/new-message") Create a new message 
+    br
+    a(href=`/${user._id}/user-page`) User dashboard
   else 
     p To create messages please either 
         a(href="/log-in") Log in
