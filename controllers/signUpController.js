@@ -16,6 +16,15 @@ exports.login_post = asyncHandler(async (req, res, next) => {
   })(req, res, next);
 });
 
+exports.logout_get = function (req, res, next) {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/');
+  });
+};
+
 exports.user_get = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id).exec();
   res.render('user', { title: 'User Dashboard', user: user });

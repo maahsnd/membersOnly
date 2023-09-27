@@ -8,12 +8,6 @@ const asyncHandler = require('express-async-handler');
 /* GET home page. */
 router.get(
   '/',
-  (req, res, next) => {
-    if (req.user) {
-      return next();
-    }
-    res.redirect('/log-in');
-  },
   asyncHandler(async (req, res, next) => {
     const message_list = await Message.find({})
       .populate('author')
@@ -44,6 +38,8 @@ router.get('/:id/user-page', signUpController.user_get);
 router.get('/log-in', signUpController.login_get);
 
 router.post('/log-in', signUpController.login_post);
+
+router.get('/log-out', signUpController.logout_get);
 
 router.get('/new-message', messageController.message_get);
 

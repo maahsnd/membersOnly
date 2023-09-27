@@ -9,6 +9,8 @@ block content
     a(href="/new-message") Create a new message 
     br
     a(href=`/${user._id}/user-page`) User dashboard
+    br
+    a(href="/log-out") Log out 
   else 
     p To create messages please either 
         a(href="/log-in") Log in
@@ -20,10 +22,12 @@ block content
         div.message
           h4 #{message.title}
           p #{message.text}
-          if message.author.membership_status 
-            p By: #{message.author.full_name}
-            p On: #{message.time_stamp}
+          if user 
+            if user.admin
+              p By: #{message.author.full_name}
+              p On: #{message.time_stamp}
           else 
             p -- Anonymous 
-          if message.author.admin 
-            a(href=`/delete-message/${message._id}`) Delete
+          if user
+            if user.admin
+              a(href=`/delete-message/${message._id}`) Delete
