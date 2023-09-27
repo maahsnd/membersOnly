@@ -1,0 +1,15 @@
+extends layout 
+
+    block content 
+
+    h1=title 
+
+     form(action="", method="post")
+        label(for="admin_pin") Enter the admin pin: 
+        input(type="password" name="admin_pin")
+        button(type="submit") Submit
+
+    a(href="/") Return home 
+
+    if error 
+        h3(style="color:red") #{error}
