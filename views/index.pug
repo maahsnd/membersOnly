@@ -3,3 +3,31 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  if user 
+    p Hi, #[em #{user.full_name}]
+    a(href="/new-message") Create a new message 
+    br
+    a(href=`/${user._id}/user-page`) User dashboard
+    br
+    a(href="/log-out") Log out 
+  else 
+    p To create messages please either 
+        a(href="/log-in") Log in
+        |  or 
+        a(href="/sign-up") Sign up
+
+  h3 Messages 
+      each message in message_list 
+        div.message
+          h4 #{message.title}
+          p #{message.text}
+          if user 
+            if user.admin
+              p By: #{message.author.full_name}
+              p On: #{message.time_stamp}
+          else 
+            p -- Anonymous 
+          if user
+            if user.admin
+              a(href=`/delete-message/${message._id}`) Delete

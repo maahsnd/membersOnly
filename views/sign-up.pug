@@ -1,0 +1,32 @@
+extends layout
+
+block content
+
+    h1=title 
+
+    form(action="", method="post") 
+        div 
+            label(for="first_name") First name: 
+            input(type="text" name="first_name" value=(undefined===userinfo ? '' : userinfo.first_name))
+        div 
+            label(for="family_name") Family name: 
+            input(type="text" name="family_name" value=(undefined===userinfo ? '' : userinfo.family_name))
+        div 
+            label(for="email") Email:
+            input(type="text" name="email" value=(undefined===userinfo ? '' : userinfo.email))
+        div 
+            label(for="password") Password:
+            input(type="password" name="password")
+        div 
+            label(for="confirm_password") Confirm password:
+            input(type="password" name="confirm_password")   
+        button(type="submit") Submit
+    if errors
+        hr
+        if (errors.length > 1)
+            h3.error Errors: 
+        else 
+            h3.error Error:
+        ul
+        for error in errors
+            li.error!= error.msg
